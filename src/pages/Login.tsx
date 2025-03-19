@@ -141,6 +141,7 @@ const Login: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="pl-10 text-xs md:text-sm py-1.5 md:py-2"
+                  showPasswordToggle
                 />
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
               </div>

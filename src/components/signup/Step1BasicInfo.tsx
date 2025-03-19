@@ -176,6 +176,7 @@ const Step1BasicInfo: React.FC = () => {
                 onChange={(e) => updateSignupData({ password: e.target.value })}
                 placeholder="••••••••"
                 className="pl-10"
+                showPasswordToggle
               />
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
             </div>

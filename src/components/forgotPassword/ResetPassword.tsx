@@ -82,6 +82,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ email, resetToken }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="pl-10"
+                showPasswordToggle
               />
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
@@ -98,6 +99,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ email, resetToken }) => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 className="pl-10"
+                showPasswordToggle
               />
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
