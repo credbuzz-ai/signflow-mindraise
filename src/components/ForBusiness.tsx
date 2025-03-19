@@ -10,11 +10,8 @@ import {
   FileChartColumn,
   PieChart,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const ForBusiness = () => {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  
   const features = [
     {
       icon: <Handshake className="h-6 w-6 text-ai-orange" />,
@@ -73,22 +70,16 @@ const ForBusiness = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-8 mb-16">
           {features.map((feature, index) => (
-            <div 
-              key={index} 
-              className={cn(
-                "flex flex-col p-6 rounded-xl transition-all duration-300 card-gradient-hover border border-gray-100 shadow-sm hover:shadow-md",
-                hoveredCard === index ? "scale-105" : ""
-              )}
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              <div className="w-12 h-12 flex items-center justify-center bg-ai-lightOrange rounded-lg mb-4">
+            <div key={index} className="flex flex-row items-start group">
+              <div className="w-12 h-12 flex items-center justify-center bg-ai-lightOrange rounded-lg mr-4 shrink-0 transition-all duration-300 group-hover:bg-ai-orange group-hover:text-white">
                 {feature.icon}
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-ai-dark">{feature.title}</h3>
-              <p className="text-ai-dark/70">
-                {feature.description}
-              </p>
+              <div>
+                <h3 className="text-lg font-semibold mb-2 text-ai-dark">{feature.title}</h3>
+                <p className="text-ai-dark/70">
+                  {feature.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
