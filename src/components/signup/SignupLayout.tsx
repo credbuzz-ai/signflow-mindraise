@@ -37,24 +37,26 @@ const SignupLayout: React.FC<SignupLayoutProps> = ({
         {children}
         
         {showSkip && currentStep < totalSteps - 1 && (
-          <div className="mt-6 flex flex-col sm:flex-row sm:justify-end gap-2">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={skipCurrentStep} 
-              className="text-gray-500 hover:text-primary"
-            >
-              Skip this step
-            </Button>
-            
-            <Button 
-              variant="link" 
-              size="sm" 
-              onClick={skipToCompletion} 
-              className="text-gray-400 hover:text-primary"
-            >
-              Skip to end
-            </Button>
+          <div className="mt-8 text-right">
+            <div className="inline-flex flex-col sm:flex-row gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={skipCurrentStep} 
+                className="border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-primary px-4"
+              >
+                Skip this step
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={skipToCompletion} 
+                className="text-gray-500 hover:text-primary hover:bg-gray-50"
+              >
+                Skip to end
+              </Button>
+            </div>
           </div>
         )}
       </div>
