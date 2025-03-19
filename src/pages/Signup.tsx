@@ -12,6 +12,9 @@ import Step6Gender from '@/components/signup/Step6Gender';
 import Step7SocialProfiles from '@/components/signup/Step7SocialProfiles';
 import Step8ContentCategories from '@/components/signup/Step8ContentCategories';
 import Step9ContentImages from '@/components/signup/Step9ContentImages';
+import Step10ContentPackages from '@/components/signup/Step10ContentPackages';
+import Step11PhoneVerification from '@/components/signup/Step11PhoneVerification';
+import Step12Payment from '@/components/signup/Step12Payment';
 
 const SignupContent: React.FC = () => {
   const { currentStep } = useSignup();
@@ -57,6 +60,18 @@ const SignupContent: React.FC = () => {
     9: {
       title: "Add your content",
       description: "Upload images of you and your content (3 minimum + profile picture)"
+    },
+    10: {
+      title: "Your content packages",
+      description: "Set up the content packages you offer with pricing"
+    },
+    11: {
+      title: "Verify your phone",
+      description: "Add your phone number to get notified of new orders"
+    },
+    12: {
+      title: "Add payment method",
+      description: "Add a payment method to receive payments from brands"
     }
   };
   
@@ -83,6 +98,12 @@ const SignupContent: React.FC = () => {
         return <Step8ContentCategories />;
       case 9:
         return <Step9ContentImages />;
+      case 10:
+        return <Step10ContentPackages />;
+      case 11:
+        return <Step11PhoneVerification />;
+      case 12:
+        return <Step12Payment />;
       default:
         return <Step0Username />;
     }

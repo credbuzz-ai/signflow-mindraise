@@ -1,16 +1,16 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSignup, ContentImage } from '@/contexts/SignupContext';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Upload, X, CheckCircle2, Info } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Upload, X, CheckCircle2, Info } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const MIN_IMAGES = 3;
 const MAX_IMAGES = 10;
 
 const Step9ContentImages: React.FC = () => {
-  const { signupData, updateSignupData, resetSignup } = useSignup();
+  const { signupData, updateSignupData, setCurrentStep } = useSignup();
   const { toast } = useToast();
   const [images, setImages] = useState<ContentImage[]>(signupData.contentImages);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,29 +20,54 @@ const Step9ContentImages: React.FC = () => {
       : null
   );
   const isMobile = useIsMobile();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // For demo purposes, we'll use placeholder images
-  const placeholderImages = [
-    '/placeholder.svg',
-    '/placeholder.svg',
-    '/placeholder.svg',
-    '/placeholder.svg',
-    '/placeholder.svg',
-  ];
-
-  const handleAddImage = () => {
-    if (images.length >= MAX_IMAGES) {
+  // For demo purposes, we'll convert uploaded files to Data URLs
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const filesArray = Array.from(e.target.files);
+    const validFiles = filesArray.filter(file => file.type.startsWith('image/'));
+    
+    if (validFiles.length === 0) {
       toast({
-        title: `Maximum ${MAX_IMAGES} images allowed`,
+        title: "Invalid file type",
+        description: "Please upload image files only",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (images.length + validFiles.length > MAX_IMAGES) {
+      toast({
+        title: `You can only upload a maximum of ${MAX_IMAGES} images`,
         variant: "destructive"
       });
       return;
     }
 
-    // In a real app, this would open a file picker
-    // For demo, we'll just add a placeholder image
-    const newImage = { url: placeholderImages[Math.floor(Math.random() * placeholderImages.length)] };
-    setImages([...images, newImage]);
+    // Convert files to data URLs and add to images state
+    validFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        if (dataUrl) {
+          setImages(prev => [...prev, { url: dataUrl }]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    
+    // Clear the file input to allow uploading the same file again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleAddImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleRemoveImage = (index: number) => {
@@ -91,28 +116,16 @@ const Step9ContentImages: React.FC = () => {
 
     setIsLoading(true);
     
-    // Simulate API call
     setTimeout(() => {
       updateSignupData({ contentImages: images });
       setIsLoading(false);
-      
-      toast({
-        title: "Registration complete!",
-        description: "Your creator profile has been set up successfully."
-      });
-      
-      // Here you would typically redirect to the dashboard
-      console.log('Signup data:', signupData);
-      
-      // For demo purposes, reset the signup
-      resetSignup();
-      window.location.href = '/dashboard';
-    }, 1500);
+      setCurrentStep(10);
+    }, 500);
   };
 
   const handleGoBack = () => {
     updateSignupData({ contentImages: images });
-    window.location.href = '/dashboard';
+    setCurrentStep(8);
   };
 
   return (
@@ -122,6 +135,15 @@ const Step9ContentImages: React.FC = () => {
           <Info className="h-5 w-5 mr-2 flex-shrink-0" />
           <p>Upload at least {MIN_IMAGES} images, including 1 profile picture. You can add up to {MAX_IMAGES} images total.</p>
         </div>
+        
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          multiple
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileSelect}
+        />
         
         <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-3'} gap-4`}>
           {images.map((image, index) => (
@@ -203,7 +225,8 @@ const Step9ContentImages: React.FC = () => {
           disabled={isLoading || images.length < MIN_IMAGES || profileImageIndex === null}
           className="flex-1 bg-gradient-signup hover:opacity-90"
         >
-          {isLoading ? "Completing Sign-up..." : "Complete Sign-up"}
+          {isLoading ? "Saving..." : "Continue"}
+          {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
         </Button>
       </div>
     </div>

@@ -20,6 +20,19 @@ export interface ContentImage {
   isProfilePicture?: boolean;
 }
 
+export interface ContentPackage {
+  type: 'instagram-post' | 'instagram-reel' | 'tiktok' | 'tweet' | 'youtube' | 'other';
+  description: string;
+  price: number;
+}
+
+export interface PaymentMethod {
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+  nameOnCard: string;
+}
+
 interface SignupData {
   // Step 0: Username
   username: string;
@@ -28,6 +41,7 @@ interface SignupData {
   name: string;
   email: string;
   password: string;
+  brandName: string;
   
   // Step 2: OTP Verification
   isVerified: boolean;
@@ -52,6 +66,24 @@ interface SignupData {
   
   // Step 9: Content Images
   contentImages: ContentImage[];
+  
+  // Step 10: Content Packages
+  contentPackages: ContentPackage[];
+  
+  // Step 11: Mobile Verification
+  phoneNumber: string;
+  countryCode: string;
+  phoneVerified: boolean;
+  
+  // Step 12: Payment Method
+  paymentMethod: PaymentMethod | null;
+  
+  // For business side
+  industry: Industry | null;
+  categories: Category[];
+  platforms: Platform[];
+  contentVolume: ContentVolume | null;
+  budget: Budget | null;
 }
 
 interface SignupContextType {
@@ -68,6 +100,7 @@ const initialSignupData: SignupData = {
   name: '',
   email: '',
   password: '',
+  brandName: '',
   isVerified: false,
   location: '',
   title: '',
@@ -76,6 +109,16 @@ const initialSignupData: SignupData = {
   socialProfiles: [],
   contentCategories: [],
   contentImages: [],
+  contentPackages: [],
+  phoneNumber: '',
+  countryCode: '+1',
+  phoneVerified: false,
+  paymentMethod: null,
+  industry: null,
+  categories: [],
+  platforms: [],
+  contentVolume: null,
+  budget: null
 };
 
 const SignupContext = createContext<SignupContextType | undefined>(undefined);
@@ -83,7 +126,7 @@ const SignupContext = createContext<SignupContextType | undefined>(undefined);
 export const SignupProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [signupData, setSignupData] = useState<SignupData>(initialSignupData);
-  const totalSteps = 10; // 0-9 steps
+  const totalSteps = 13; // 0-12 steps
 
   const updateSignupData = (data: Partial<SignupData>) => {
     setSignupData(prev => ({ ...prev, ...data }));
