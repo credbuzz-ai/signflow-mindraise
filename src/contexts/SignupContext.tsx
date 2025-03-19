@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Industry = 'agency' | 'ecommerce' | 'website-app' | 'brick-mortar' | 'other';
 export type Category = 'fashion' | 'beauty' | 'travel' | 'food-drink' | 'tech' | 'finance' | 'health' | 'education' | 'entertainment' | 'sports';
-export type Platform = 'instagram' | 'tiktok' | 'twitter' | 'youtube' | 'twitch' | 'amazon' | 'website';
+export type Platform = 'instagram' | 'tiktok' | 'twitter' | 'youtube' | 'twitch' | 'amazon' | 'website' | 'ugc';
 export type ContentVolume = '0-5' | '5-10' | '10-20' | '20-50' | '50+';
 export type Budget = 'under-10k' | '10k-50k' | '50k-100k' | '100k-500k' | '500k+';
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
