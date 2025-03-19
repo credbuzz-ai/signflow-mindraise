@@ -65,8 +65,8 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ email, resetToken }) => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-2 gradient-text">Reset Password</h1>
-      <p className="text-gray-600 mb-6">
+      <h1 className="text-xl md:text-2xl font-bold mb-2 gradient-text">Reset Password</h1>
+      <p className="text-xs md:text-sm text-gray-600 mb-4 md:mb-6">
         Create a new password for your account
       </p>
 
@@ -83,9 +83,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ email, resetToken }) => {
                 placeholder="••••••••"
                 className="pl-10"
               />
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
-            <p className="text-xs text-gray-500">Must be at least 8 characters</p>
+            <p className="text-[10px] md:text-xs text-gray-500">Must be at least 8 characters</p>
           </div>
 
           <div className="space-y-2">
@@ -99,22 +99,22 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ email, resetToken }) => {
                 placeholder="••••••••"
                 className="pl-10"
               />
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
           </div>
 
           <Button 
             type="submit" 
-            className="w-full bg-gradient-signup hover:opacity-90"
+            className="w-full bg-gradient-signup hover:opacity-90 text-xs md:text-sm py-2 md:py-2.5"
             disabled={isLoading}
           >
             {isLoading ? "Resetting password..." : "Reset Password"}
-            {!isLoading && <Check className="ml-2 h-4 w-4" />}
+            {!isLoading && <Check className="ml-1 md:ml-2 h-3 w-3 md:h-4 md:w-4" />}
           </Button>
         </div>
       </form>
 
-      <p className="mt-4 text-center text-sm text-gray-600">
+      <p className="mt-4 text-center text-xs md:text-sm text-gray-600">
         Remember your password?{" "}
         <a href="/login" className="font-medium text-primary hover:underline">
           Sign in

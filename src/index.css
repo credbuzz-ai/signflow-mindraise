@@ -89,7 +89,7 @@
   * {
     @apply border-border;
   }
-
+  
   body {
     @apply bg-white text-ai-dark antialiased font-medium;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
@@ -115,6 +115,12 @@
   
   .hero-blur {
     @apply backdrop-blur-md bg-white/80 border border-ai-orange/20;
+  }
+
+  @media (max-width: 640px) {
+    .text-gradient {
+      @apply text-ai-orange;
+    }
   }
 }
 
@@ -147,4 +153,47 @@
   @apply border-transparent;
   background: linear-gradient(white, white) padding-box,
               linear-gradient(135deg, hsl(24, 95%, 53%), hsl(20, 96%, 48%)) border-box;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .signup-container {
+    background-image: 
+      radial-gradient(circle at 100% 0%, rgba(249, 115, 22, 0.05) 0%, transparent 15%),
+      radial-gradient(circle at 0% 100%, rgba(234, 88, 12, 0.05) 0%, transparent 15%);
+  }
+  
+  .option-card {
+    @apply p-3;
+  }
+}
+
+/* Improve tap target sizes on mobile */
+@media (max-width: 640px) {
+  button, 
+  a, 
+  input[type="submit"],
+  input[type="button"] {
+    @apply min-h-9;
+  }
+  
+  label {
+    @apply py-0.5;
+  }
+}
+
+/* Animation for fade-in */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

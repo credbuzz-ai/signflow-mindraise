@@ -5,12 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,17 +58,17 @@ const Login: React.FC = () => {
 
   return (
     <div className="signup-container min-h-screen w-full flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8 animate-fade-in">
-        <h1 className="text-2xl font-bold mb-2 gradient-text">Welcome back</h1>
-        <p className="text-gray-600 mb-6">Sign in to your account</p>
+      <div className={`w-full ${isMobile ? 'max-w-[95%]' : 'max-w-md'} mx-auto bg-white rounded-xl shadow-lg p-5 md:p-8 animate-fade-in`}>
+        <h1 className="text-xl md:text-2xl font-bold mb-2 gradient-text">Welcome back</h1>
+        <p className="text-xs md:text-sm text-gray-600 mb-4 md:mb-6">Sign in to your account</p>
 
-        <div className="flex flex-col gap-4 mb-8">
+        <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8">
           <Button 
             onClick={handleGoogleLogin}
             variant="outline" 
-            className="w-full flex items-center justify-center gap-2"
+            className="w-full flex items-center justify-center gap-2 text-xs md:text-sm py-1.5 md:py-2"
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -89,20 +91,20 @@ const Login: React.FC = () => {
           <Button 
             onClick={handleXLogin}
             variant="outline" 
-            className="w-full flex items-center justify-center gap-2"
+            className="w-full flex items-center justify-center gap-2 text-xs md:text-sm py-1.5 md:py-2"
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
             Sign in with X
           </Button>
         </div>
 
-        <div className="relative mb-8">
+        <div className="relative mb-6 md:mb-8">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
+          <div className="relative flex justify-center text-xs md:text-sm">
             <span className="px-2 bg-white text-gray-500">Or continue with email</span>
           </div>
         </div>
@@ -110,7 +112,7 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-xs md:text-sm">Email</Label>
               <div className="relative">
                 <Input
                   id="email"
@@ -118,16 +120,16 @@ const Login: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="pl-10"
+                  className="pl-10 text-xs md:text-sm py-1.5 md:py-2"
                 />
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <a href="/forgot-password" className="text-sm font-medium text-primary hover:underline">
+                <Label htmlFor="password" className="text-xs md:text-sm">Password</Label>
+                <a href="/forgot-password" className="text-xs md:text-sm font-medium text-primary hover:underline">
                   Forgot password?
                 </a>
               </div>
@@ -138,15 +140,15 @@ const Login: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="pl-10"
+                  className="pl-10 text-xs md:text-sm py-1.5 md:py-2"
                 />
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
               </div>
             </div>
 
             <Button 
               type="submit" 
-              className="w-full bg-gradient-signup hover:opacity-90"
+              className="w-full bg-gradient-signup hover:opacity-90 text-xs md:text-sm py-1.5 md:py-2.5"
               disabled={isLoading}
             >
               {isLoading ? "Signing in..." : "Sign in"}
@@ -154,7 +156,7 @@ const Login: React.FC = () => {
           </div>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-xs md:text-sm text-gray-600">
           Don't have an account?{" "}
           <a href="/signup" className="font-medium text-primary hover:underline">
             Sign up
