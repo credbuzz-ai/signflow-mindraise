@@ -7,7 +7,6 @@ export type Platform = 'instagram' | 'tiktok' | 'twitter' | 'youtube' | 'twitch'
 export type ContentVolume = '0-5' | '5-10' | '10-20' | '20-50' | '50+';
 export type Budget = 'under-10k' | '10k-50k' | '50k-100k' | '100k-500k' | '500k+';
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
-export type FollowerRange = 'under-1k' | '1k-5k' | '5k-10k' | '10k-50k' | '50k-100k' | '100k-500k' | '500k-1m' | 'over-1m';
 
 export interface SocialProfile {
   platform: Platform;
@@ -33,7 +32,7 @@ export interface PaymentMethod {
   nameOnCard: string;
 }
 
-interface SignupData {
+export interface SignupData {
   // Step 0: Username
   username: string;
   
@@ -90,9 +89,14 @@ interface SignupContextType {
   currentStep: number;
   totalSteps: number;
   signupData: SignupData;
+  completedSteps: number[];
   setCurrentStep: (step: number) => void;
   updateSignupData: (data: Partial<SignupData>) => void;
   resetSignup: () => void;
+  skipCurrentStep: () => void;
+  markStepComplete: (step: number) => void;
+  skipToCompletion: () => void;
+  isStepComplete: (step: number) => boolean;
 }
 
 const initialSignupData: SignupData = {
@@ -126,6 +130,7 @@ const SignupContext = createContext<SignupContextType | undefined>(undefined);
 export const SignupProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [signupData, setSignupData] = useState<SignupData>(initialSignupData);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const totalSteps = 13; // 0-12 steps
 
   const updateSignupData = (data: Partial<SignupData>) => {
@@ -135,6 +140,33 @@ export const SignupProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const resetSignup = () => {
     setCurrentStep(0);
     setSignupData(initialSignupData);
+    setCompletedSteps([]);
+  };
+
+  const skipCurrentStep = () => {
+    if (currentStep < totalSteps - 1) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const markStepComplete = (step: number) => {
+    setCompletedSteps(prev => {
+      if (!prev.includes(step)) {
+        return [...prev, step].sort((a, b) => a - b);
+      }
+      return prev;
+    });
+  };
+
+  const isStepComplete = (step: number) => {
+    return completedSteps.includes(step);
+  };
+
+  const skipToCompletion = () => {
+    // Mark all steps as complete and go to the final step
+    const allSteps = Array.from({ length: totalSteps }, (_, i) => i);
+    setCompletedSteps(allSteps);
+    setCurrentStep(totalSteps - 1);
   };
 
   return (
@@ -142,9 +174,14 @@ export const SignupProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       currentStep,
       totalSteps,
       signupData,
+      completedSteps,
       setCurrentStep,
       updateSignupData,
-      resetSignup
+      resetSignup,
+      skipCurrentStep,
+      markStepComplete,
+      skipToCompletion,
+      isStepComplete
     }}>
       {children}
     </SignupContext.Provider>

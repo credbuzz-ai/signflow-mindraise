@@ -1,19 +1,28 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSignup } from '@/contexts/SignupContext';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Step5Bio: React.FC = () => {
-  const { signupData, updateSignupData, setCurrentStep } = useSignup();
+  const { signupData, updateSignupData, setCurrentStep, markStepComplete, isStepComplete } = useSignup();
   const { toast } = useToast();
   const [bio, setBio] = useState(signupData.bio);
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useIsMobile();
   
   const maxBioLength = 500;
+  
+  // Check if this step was previously completed
+  useEffect(() => {
+    if (signupData.bio && !isStepComplete(5)) {
+      markStepComplete(5);
+    }
+  }, [signupData.bio, isStepComplete, markStepComplete]);
 
   const handleSubmit = () => {
     if (!bio) {
@@ -28,12 +37,14 @@ const Step5Bio: React.FC = () => {
     
     setTimeout(() => {
       updateSignupData({ bio });
+      markStepComplete(5);
       setCurrentStep(6);
       setIsLoading(false);
     }, 500);
   };
 
   const handleGoBack = () => {
+    updateSignupData({ bio });
     setCurrentStep(4);
   };
 
@@ -47,7 +58,7 @@ const Step5Bio: React.FC = () => {
             value={bio}
             onChange={(e) => setBio(e.target.value.slice(0, maxBioLength))}
             placeholder="Tell brands about yourself, your content style, and what makes you unique..."
-            className="min-h-32 resize-y"
+            className={`resize-y ${isMobile ? 'min-h-24' : 'min-h-32'}`}
           />
           <div className="flex justify-between text-xs">
             <span className="text-gray-500">
@@ -60,12 +71,12 @@ const Step5Bio: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex space-x-3">
+      <div className={`${isMobile ? 'flex flex-col space-y-3' : 'flex space-x-3'}`}>
         <Button
           type="button"
           variant="outline"
           onClick={handleGoBack}
-          className="flex-1"
+          className={isMobile ? 'w-full' : 'flex-1'}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
@@ -75,7 +86,7 @@ const Step5Bio: React.FC = () => {
           type="button"
           onClick={handleSubmit}
           disabled={isLoading || !bio}
-          className="flex-1 bg-gradient-signup hover:opacity-90"
+          className={`${isMobile ? 'w-full' : 'flex-1'} bg-gradient-signup hover:opacity-90`}
         >
           {isLoading ? "Saving..." : "Continue"}
           {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}

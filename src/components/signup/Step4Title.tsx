@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSignup } from '@/contexts/SignupContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,12 +8,19 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 const Step4Title: React.FC = () => {
-  const { signupData, updateSignupData, setCurrentStep } = useSignup();
+  const { signupData, updateSignupData, setCurrentStep, markStepComplete, isStepComplete } = useSignup();
   const { toast } = useToast();
   const [title, setTitle] = useState(signupData.title);
   const [isLoading, setIsLoading] = useState(false);
   
   const maxTitleLength = 60;
+
+  // Check if this step was previously completed
+  useEffect(() => {
+    if (signupData.title && !isStepComplete(4)) {
+      markStepComplete(4);
+    }
+  }, [signupData.title, isStepComplete, markStepComplete]);
 
   const handleSubmit = () => {
     if (!title) {
@@ -28,12 +35,14 @@ const Step4Title: React.FC = () => {
     
     setTimeout(() => {
       updateSignupData({ title });
+      markStepComplete(4);
       setCurrentStep(5);
       setIsLoading(false);
     }, 500);
   };
 
   const handleGoBack = () => {
+    updateSignupData({ title });
     setCurrentStep(3);
   };
 
