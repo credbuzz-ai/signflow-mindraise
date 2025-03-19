@@ -2,68 +2,89 @@
 import React from 'react';
 import { SignupProvider, useSignup } from '@/contexts/SignupContext';
 import SignupLayout from '@/components/signup/SignupLayout';
+import Step0Username from '@/components/signup/Step0Username';
 import Step1BasicInfo from '@/components/signup/Step1BasicInfo';
 import Step2VerifyOTP from '@/components/signup/Step2VerifyOTP';
-import Step3Industry from '@/components/signup/Step3Industry';
-import Step4Categories from '@/components/signup/Step4Categories';
-import Step5Platforms from '@/components/signup/Step5Platforms';
-import Step6ContentVolume from '@/components/signup/Step6ContentVolume';
-import Step7Budget from '@/components/signup/Step7Budget';
+import Step3Location from '@/components/signup/Step3Location';
+import Step4Title from '@/components/signup/Step4Title';
+import Step5Bio from '@/components/signup/Step5Bio';
+import Step6Gender from '@/components/signup/Step6Gender';
+import Step7SocialProfiles from '@/components/signup/Step7SocialProfiles';
+import Step8ContentCategories from '@/components/signup/Step8ContentCategories';
+import Step9ContentImages from '@/components/signup/Step9ContentImages';
 
 const SignupContent: React.FC = () => {
   const { currentStep } = useSignup();
   
   // Define step titles and descriptions
   const stepInfo = {
+    0: {
+      title: "Claim your username",
+      description: "Choose a unique username for your profile"
+    },
     1: {
       title: "Create your account",
-      description: "Get started with your influencer marketing journey"
+      description: "Get started with your content creator journey"
     },
     2: {
       title: "Verify your email",
       description: "Enter the 6-digit code we sent to your email"
     },
     3: {
-      title: "Select your industry",
-      description: "Which industry best describes your brand?"
+      title: "Where are you located?",
+      description: "Help brands find you for location-based campaigns"
     },
     4: {
-      title: "Choose categories",
-      description: "Select up to 3 categories that describe your brand"
+      title: "Introduce yourself",
+      description: "Add a title that will be shown on your profile"
     },
     5: {
-      title: "Target platforms",
-      description: "Which platforms would you like to target?"
+      title: "Describe yourself",
+      description: "Tell us about you and your content"
     },
     6: {
-      title: "Content volume",
-      description: "How many pieces of content do you need monthly?"
+      title: "What's your gender?",
+      description: "This helps brands find creators for targeted campaigns"
     },
     7: {
-      title: "Annual budget",
-      description: "What's your annual budget for influencer marketing?"
+      title: "Add your social channels",
+      description: "Connect your social profiles and share your follower count"
+    },
+    8: {
+      title: "What content do you create?",
+      description: "Select categories that describe your content"
+    },
+    9: {
+      title: "Add your content",
+      description: "Upload images of you and your content (3 minimum + profile picture)"
     }
   };
   
   // Render the current step component
   const renderStepComponent = () => {
     switch (currentStep) {
+      case 0:
+        return <Step0Username />;
       case 1:
         return <Step1BasicInfo />;
       case 2:
         return <Step2VerifyOTP />;
       case 3:
-        return <Step3Industry />;
+        return <Step3Location />;
       case 4:
-        return <Step4Categories />;
+        return <Step4Title />;
       case 5:
-        return <Step5Platforms />;
+        return <Step5Bio />;
       case 6:
-        return <Step6ContentVolume />;
+        return <Step6Gender />;
       case 7:
-        return <Step7Budget />;
+        return <Step7SocialProfiles />;
+      case 8:
+        return <Step8ContentCategories />;
+      case 9:
+        return <Step9ContentImages />;
       default:
-        return <Step1BasicInfo />;
+        return <Step0Username />;
     }
   };
 

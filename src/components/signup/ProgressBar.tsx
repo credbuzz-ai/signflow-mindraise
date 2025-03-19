@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { cn } from "@/lib/utils";
+import { useSignup } from '@/contexts/SignupContext';
 
 interface ProgressBarProps {
   currentStep: number;
@@ -8,12 +8,12 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) => {
-  const percentage = Math.round((currentStep - 1) / (totalSteps - 1) * 100);
+  const percentage = Math.round((currentStep) / (totalSteps - 1) * 100);
   
   return (
     <div className="w-full mb-8">
       <div className="flex justify-between mb-2">
-        <span className="text-sm font-medium text-primary">Step {currentStep} of {totalSteps}</span>
+        <span className="text-sm font-medium text-primary">Step {currentStep + 1} of {totalSteps}</span>
         <span className="text-sm font-medium text-primary">{percentage}%</span>
       </div>
       <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
