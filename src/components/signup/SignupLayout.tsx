@@ -28,32 +28,7 @@ const SignupLayout: React.FC<SignupLayoutProps> = ({
       <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8 animate-fade-in">
         {showProgress && <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />}
         
-        <div className="flex justify-between items-center mb-2">
-          <h1 className="text-2xl font-bold gradient-text">{title}</h1>
-          
-          {showSkip && currentStep < totalSteps - 1 && (
-            <div className="flex space-x-2">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={skipCurrentStep} 
-                className="text-gray-500 hover:text-primary text-sm"
-              >
-                Skip this step
-              </Button>
-              {!isMobile && (
-                <Button 
-                  variant="link" 
-                  size="sm" 
-                  onClick={skipToCompletion} 
-                  className="text-gray-400 hover:text-primary text-xs"
-                >
-                  Skip to end
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
+        <h1 className="text-2xl font-bold gradient-text mb-2">{title}</h1>
         
         {description && (
           <p className="text-gray-600 mb-6">{description}</p>
@@ -61,15 +36,26 @@ const SignupLayout: React.FC<SignupLayoutProps> = ({
         
         {children}
         
-        {isMobile && showSkip && currentStep < totalSteps - 1 && (
-          <Button 
-            variant="link" 
-            size="sm" 
-            onClick={skipToCompletion} 
-            className="w-full text-gray-400 mt-4"
-          >
-            Skip entire signup
-          </Button>
+        {showSkip && currentStep < totalSteps - 1 && (
+          <div className="mt-6 flex flex-col sm:flex-row sm:justify-end gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={skipCurrentStep} 
+              className="text-gray-500 hover:text-primary"
+            >
+              Skip this step
+            </Button>
+            
+            <Button 
+              variant="link" 
+              size="sm" 
+              onClick={skipToCompletion} 
+              className="text-gray-400 hover:text-primary"
+            >
+              Skip to end
+            </Button>
+          </div>
         )}
       </div>
     </div>
