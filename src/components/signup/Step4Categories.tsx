@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { useSignup, Category } from '@/contexts/SignupContext';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import SelectionCard from './SelectionCard';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const MAX_CATEGORIES = 3;
 
@@ -25,6 +25,7 @@ const Step4Categories: React.FC = () => {
   const { signupData, updateSignupData, setCurrentStep } = useSignup();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useIsMobile();
 
   const toggleCategory = (category: Category) => {
     const currentCategories = [...signupData.categories];
@@ -76,7 +77,7 @@ const Step4Categories: React.FC = () => {
         Select up to {MAX_CATEGORIES} categories that best describe your brand.
       </p>
 
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-3 mb-6`}>
         {categoryOptions.map((option) => (
           <SelectionCard
             key={option.id}

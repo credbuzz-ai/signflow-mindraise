@@ -2,6 +2,7 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SelectionCardProps {
   id: string;
@@ -22,6 +23,8 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
   maxWidth = 'max-w-full',
   className,
 }) => {
+  const isMobile = useIsMobile();
+  
   return (
     <div
       id={id}
@@ -30,13 +33,14 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
         'option-card relative',
         isSelected ? 'selected' : 'hover:border-gray-400',
         maxWidth,
+        isMobile ? 'py-3 px-3' : 'py-3 px-4',
         className
       )}
     >
       <div className="flex items-center">
-        {icon && <div className="mr-3">{icon}</div>}
+        {icon && <div className={`${isMobile ? 'mr-2' : 'mr-3'}`}>{icon}</div>}
         <div className="flex-1">
-          <h3 className="font-medium">{title}</h3>
+          <h3 className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>{title}</h3>
         </div>
         <div className={cn(
           'w-5 h-5 rounded-full border flex items-center justify-center transition-all',

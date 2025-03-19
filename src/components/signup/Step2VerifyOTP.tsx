@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSignup } from '@/contexts/SignupContext';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Step2VerifyOTP: React.FC = () => {
   const { signupData, updateSignupData, setCurrentStep } = useSignup();
@@ -14,6 +14,7 @@ const Step2VerifyOTP: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const inputRefs = Array(6).fill(0).map(() => React.createRef<HTMLInputElement>());
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -25,22 +26,18 @@ const Step2VerifyOTP: React.FC = () => {
   }, [timeLeft]);
 
   const handleOtpChange = (index: number, value: string) => {
-    // Only allow numbers
     if (value && !/^\d*$/.test(value)) return;
 
     const newOtp = [...otp];
-    // Only take the last character if pasting
     newOtp[index] = value.slice(-1);
     setOtp(newOtp);
 
-    // Auto focus to next input if current input is filled
     if (value && index < 5) {
       inputRefs[index + 1].current?.focus();
     }
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Move to previous input on backspace
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs[index - 1].current?.focus();
     }
@@ -61,7 +58,6 @@ const Step2VerifyOTP: React.FC = () => {
       
       setOtp(newOtp);
       
-      // Focus on the next empty input or the last input
       const nextEmptyIndex = newOtp.findIndex(digit => !digit);
       const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
       inputRefs[focusIndex].current?.focus();
@@ -81,9 +77,7 @@ const Step2VerifyOTP: React.FC = () => {
 
     setIsLoading(true);
     
-    // Simulate API verification
     setTimeout(() => {
-      // For demo, let's say 123456 is the correct OTP
       if (otpValue === '123456') {
         updateSignupData({ isVerified: true });
         setCurrentStep(3);
@@ -124,7 +118,7 @@ const Step2VerifyOTP: React.FC = () => {
       </p>
 
       <div className="mb-6">
-        <div className="flex justify-between mb-4 gap-2">
+        <div className={`flex justify-between mb-4 gap-${isMobile ? '1' : '2'}`}>
           {otp.map((digit, index) => (
             <Input
               key={index}
@@ -135,7 +129,7 @@ const Step2VerifyOTP: React.FC = () => {
               onChange={(e) => handleOtpChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               onPaste={index === 0 ? handlePaste : undefined}
-              className="w-12 h-12 text-center text-lg font-semibold focus:ring-2 focus:ring-primary"
+              className={`${isMobile ? 'w-10 h-10 text-base' : 'w-12 h-12 text-lg'} text-center font-semibold focus:ring-2 focus:ring-primary`}
             />
           ))}
         </div>
